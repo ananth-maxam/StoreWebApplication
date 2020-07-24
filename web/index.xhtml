@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+<!--        <h:form>  
+            <h:outputLabel for="username">User Name</h:outputLabel>  
+            <h:inputText id="username" value="# {loginbean.user.userName}" required="true" requiredMessage="User Name is required" /><br/>  
+            <h:outputLabel for="username">Password</h:outputLabel> 
+            <h:inputText id="password" value="# {loginbean.user.password}" required="true" requiredMessage="password is required" /><br/>  
+            <h:commandButton id="submit-button" value="Submit" action="# {loginbean.loginCheck()}"/>  
+        </h:form> -->
+        
+        
+        
+        
+        <h:form>
+		<h3>Store Web Application</h3>
+		<h:outputText value="Username" />
+		<h:inputText id="username" value="#{loginbean.user.userName}"></h:inputText>
+		<h:message for="username"></h:message>
+		<br /><br />
+		
+		<h:outputText value="Password" />
+		<h:inputSecret id="password" value="#{loginbean.user.password}"></h:inputSecret>
+		<h:message for="password"></h:message>
+		<br /><br />
+		
+		<h:commandButton action="#{loginbean.loginCheck()}"
+			value="Login"></h:commandButton>
+	</h:form>
+    </h:body>
+</html>
+

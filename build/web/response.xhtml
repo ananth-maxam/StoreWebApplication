@@ -1,0 +1,337 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <center><h2>#{loginbean.storeDetails.storeName}</h2></center>
+        <center><h2>#{storebean.deepCopy.storeName}</h2></center>
+        Hello #{sessionScope.role}
+
+        <h:form>
+            <p:commandButton id="storeadd" value="Store" action="#{storebean.editStore()}" onclick="PF('dlg1').show();"  update=":storeupdateform"/>
+        </h:form>
+        <p:commandButton id="employeedd" value="Employee" type="button" onclick="PF('dlg2').show();" />
+        <p:commandButton id="supplierdd" value="Supplier" type="button" onclick="PF('dlg3').show();" />
+        <p:commandButton id="customeradd" value="Customer" type="button" onclick="PF('dlg4').show();" />
+        
+        <h:form>
+		<h:commandLink action="#{loginbean.logout}" value="Logout"></h:commandLink>
+	</h:form>
+
+        <p:dialog header="Edit Store Details" widgetVar="dlg1" minHeight="80" minWidth="80">
+
+
+            <h:form id="storeupdateform">  
+                <c:if test="#{sessionScope.role == 'owner'}">
+                    <h:outputLabel for="storename">Store Name</h:outputLabel>  
+                    <h:inputText id="storename" value="#{storebean.deepCopy.storeName}" required="true" requiredMessage="store name is required" /><br/>  
+                    <h:outputLabel for="address">Address</h:outputLabel> 
+                    <h:inputText id="address" value="#{storebean.deepCopy.address}" required="true" requiredMessage="address is required" /><br/>  
+                    <h:outputLabel for="tin">Tin Number</h:outputLabel> 
+                    <h:inputText id="tin" value="#{storebean.deepCopy.tinNumber}" required="true" requiredMessage="tin is required" /><br/>  
+                    <h:outputLabel for="emailid">Email</h:outputLabel> 
+                    <h:inputText id="emailid" value="#{storebean.deepCopy.emailId}" required="true" requiredMessage="email is required" /><br/>  
+                    <h:outputLabel for="mobile">Mobile</h:outputLabel> 
+                    <h:inputText id="mobile" value="#{storebean.deepCopy.mobileNumber}" required="true" requiredMessage="mobilenumber is required" /><br/>  
+
+                    <h:commandButton id="storesubmit" value="Submit" action="#{storebean.addStoreDetails(storebean.deepCopy)}"/>  
+                </c:if>
+            </h:form> 
+            <c:if test="#{sessionScope.role == 'manager' or sessionScope.role == 'salesperson'}">
+                Store Owner only can modify the store details.
+            </c:if>
+
+
+        </p:dialog>
+        <p:dialog header="Add Employee Details" widgetVar="dlg2" minHeight="80">
+
+            <h:form>  
+                <c:if test="#{sessionScope.role == 'owner'}">
+                    <h:outputLabel for="employeename">Employee Name</h:outputLabel>  
+                    <h:inputText id="employeename" value="#{employeebean.employee.name}" required="true" requiredMessage="Employee name is required" /><br/>  
+                    <h:outputLabel for="employeaddress">Address</h:outputLabel> 
+                    <h:inputText id="employeaddress" value="#{employeebean.employee.address}" required="true" requiredMessage="Address is required" /><br/>  
+                    <h:outputLabel for="employeeemail">Email</h:outputLabel> 
+                    <h:inputText id="employeeemail" value="#{employeebean.employee.email}" required="true" requiredMessage="Email is required" /><br/>  
+                    <h:outputLabel for="employeemobile">Mobile</h:outputLabel> 
+                    <h:inputText id="employeemobile" value="#{employeebean.employee.mobileNumber}" required="true" requiredMessage="Mobilenumber is required" /><br/>  
+
+                    <h:commandButton id="storesubmit" value="Submit" action="#{employeebean.saveEmployee()}"/> 
+                </c:if>
+            </h:form> 
+            <c:if test="#{sessionScope.role == 'manager' or sessionScope.role == 'salesperson'}">
+                Store owner only can Add the Employee details.
+            </c:if>
+        </p:dialog>
+        <p:dialog header="Add Supplier Details" widgetVar="dlg3" minHeight="80">
+            <h:form>  
+                <c:if test="#{sessionScope.role == 'owner' or sessionScope.role == 'manager'}">
+                    <h:outputLabel for="suppliername">Supplier Name</h:outputLabel>  
+                    <h:inputText id="suppliername" value="#{supplierbaen.supplier.name}" required="true" requiredMessage="Supplier name is required" /><br/>  
+                    <h:outputLabel for="tin">Supplier TinNumber</h:outputLabel>  
+                    <h:inputText id="tin" value="#{supplierbaen.supplier.gsTin}" required="true" requiredMessage="Tin number is required" /><br/>  
+                    <h:outputLabel for="supplieraddress">Address</h:outputLabel> 
+                    <h:inputText id="supplieraddress" value="#{supplierbaen.supplier.address}" required="true" requiredMessage="Address is required" /><br/>  
+                    <h:outputLabel for="supplieremail">Email</h:outputLabel> 
+                    <h:inputText id="supplieremail" value="#{supplierbaen.supplier.email}" required="true" requiredMessage="Email is required" /><br/>  
+                    <h:outputLabel for="suppliermobile">Mobile</h:outputLabel> 
+                    <h:inputText id="suppliermobile" value="#{supplierbaen.supplier.mobile}" required="true" requiredMessage="Mobilenumber is required" /><br/>  
+
+                    <h:commandButton id="suppliersubmit" value="Submit" action="#{supplierbaen.saveSupplier()}"/>  
+                </c:if>
+            </h:form> 
+            <c:if test="#{sessionScope.role == 'salesperson'}">
+                Store Owner and Manager can add the supplier details
+            </c:if>
+        </p:dialog>
+        <p:dialog header="Add Customer Details" widgetVar="dlg4" minHeight="80">
+            <h:form>  
+                <h:outputLabel for="customername">Customer Name</h:outputLabel>  
+                <h:inputText id="customername" value="#{customerbean.customer.name}" required="true" requiredMessage="Customer name is required" /><br/>  
+                <h:outputLabel for="customeraddress">Address</h:outputLabel> 
+                <h:inputText id="customeraddress" value="#{customerbean.customer.address}" required="true" requiredMessage="Address is required" /><br/>  
+                <h:outputLabel for="customeremail">Email</h:outputLabel> 
+                <h:inputText id="customeremail" value="#{customerbean.customer.email}" required="true" requiredMessage="Email is required" /><br/>  
+                <h:outputLabel for="customermobile">Mobile</h:outputLabel> 
+                <h:inputText id="customermobile" value="#{customerbean.customer.mobile}" required="true" requiredMessage="Mobilenumber is required" /><br/>  
+
+                <h:commandButton id="customersubmit" value="Submit" action="#{customerbean.saveCustomer()}"/>  
+            </h:form> 
+        </p:dialog>
+
+
+        <br></br>
+        <center><h2>Employee details</h2></center>
+
+        <p:dataTable id="employeedetail" var="emp" value="#{employeebean.employeeList}">
+            <p:column headerText="Name">
+                <h:outputText value="#{emp.name}" />
+            </p:column>
+
+            <p:column headerText="Address">
+                <h:outputText value="#{emp.address}" />
+            </p:column>
+
+            <p:column headerText="Mail">
+                <h:outputText value="#{emp.email}" />
+            </p:column>
+
+            <p:column headerText="Mobile">
+                <h:outputText value="#{emp.mobileNumber}" />
+            </p:column>
+            <c:if test="#{sessionScope.role == 'owner'}">
+            <p:column headerText="Delete">
+                <h:form id="deletecommandemployee">
+                    <p:commandButton id="employeedelete" 
+                                     action="#{employeebean.employeedelete(emp.id)}" 
+                                     icon="ui-icon ui-icon-trash" 
+                                     value="Delete" 
+                                     title="GDeleteButton" update="employeedetail">
+                        <c:if test="#{sessionScope.role == 'owner'}">
+                            <p:confirm header="Delete Record" 
+                                       message="Are you sure about deleting this record?" 
+                                       icon="ui-icon-alert"/>
+                        </c:if>
+                        <c:if test="#{sessionScope.role == 'manager' or sessionScope.role == 'salesperson'}">
+                            <p:confirm header="Delete Record" 
+                                       message="Store Owner only can Delte the Employee details" 
+                                       icon="ui-icon-alert"/>
+                        </c:if>
+                    </p:commandButton>
+
+<!--                    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                        ========# {sessionScope.role}
+                        <c:if test="# {sessionScope.role == 'owner'}"> 
+                            <p:commandButton title="GDelYesButton" value="Confirm" styleClass="ui-confirmdialog-yes"/>
+                            <p:commandButton title="GDelNoButton" value="Not" styleClass="ui-confirmdialog-no" />
+                        </c:if>
+                    </p:confirmDialog>-->
+                </h:form>
+            </p:column>
+                </c:if>
+
+            <p:column headerText="Edit">
+                <h:form>
+                    <p:commandButton id="employeeeditbutton" value="Edit"  action="#{employeebean.editEmployee(emp.id)}"  onclick="PF('dlg7').show();" update=":employeeupdate"/>
+                </h:form>
+            </p:column>
+        </p:dataTable>
+
+        <p:dialog id="editemployeedialog" header="Edit Employee Details" widgetVar="dlg7" minHeight="80" minWidth="80" >
+            <h:form id="employeeupdate">  
+                <c:if test="#{sessionScope.role == 'owner'}">
+                    <h:inputHidden id="employeeupdateid" value="#{employeebean.deepCopy.id}"  /><br/>  
+                    <h:outputLabel for="employeeupdatename">Customer Name</h:outputLabel>   
+                    <h:inputText id="employeeupdatename" value="#{employeebean.deepCopy.name}" required="true" requiredMessage="Employee name is required" /><br/>  
+                    <h:outputLabel for="employeeupdateaddress">Address</h:outputLabel> 
+                    <h:inputText id="employeeupdateaddress" value="#{employeebean.deepCopy.address}" required="true" requiredMessage="Address is required" /><br/>  
+                    <h:outputLabel for="employeeupdateemail">Email</h:outputLabel> 
+                    <h:inputText id="employeeupdateemail" value="#{employeebean.deepCopy.email}" required="true" requiredMessage="Email is required" /><br/>  
+                    <h:outputLabel for="employeeupdatemobile">Mobile</h:outputLabel> 
+                    <h:inputText id="employeeupdatemobile" value="#{employeebean.deepCopy.mobileNumber}" required="true" requiredMessage="Mobilenumber is required" /><br/>  
+                    <h:commandButton id="employeeupdatebutton" value="Submit" action="#{employeebean.updateEmployee(employeebean.deepCopy)}"/>  
+                </c:if>
+            </h:form> 
+            <c:if test="#{sessionScope.role == 'manager' or sessionScope.role == 'salesperson'}">
+                Store Owner can Modify the Employee Details
+            </c:if>
+        </p:dialog>
+        <br></br>
+        <center><h2>Supplier details</h2></center>
+
+        <p:dataTable id="supplierdetail" var="supplier" value="#{supplierbaen.supplierList}">
+            <p:column headerText="Name">
+                <h:outputText value="#{supplier.name}" />
+            </p:column>
+            <p:column headerText="GSTIN">
+                <h:outputText value="#{supplier.gsTin}" />
+            </p:column>
+
+            <p:column headerText="Address">
+                <h:outputText value="#{supplier.address}" />
+            </p:column>
+
+            <p:column headerText="Mail">
+                <h:outputText value="#{supplier.email}" />
+            </p:column>
+
+            <p:column headerText="Mobile">
+                <h:outputText value="#{supplier.mobile}" />
+            </p:column>
+            <c:if test="#{sessionScope.role == 'owner' or sessionScope.role == 'manager'}">
+            <p:column headerText="Delete">
+                <h:form id="deletecommandsupplier">
+                    <p:commandButton id="supplierdelete" 
+                                     action="#{supplierbaen.supplierdeletedelete(supplier.id)}" 
+                                     icon="ui-icon ui-icon-trash" 
+                                     value="Delete" 
+                                     title="GDeleteButton" update="supplierdetail"  onclick="PF('pd').show()">
+                        <c:if test="#{sessionScope.role == 'owner' or sessionScope.role == 'manager'}">
+                            <p:confirm header="Delete Record" 
+                                       message="Are you sure about deleting this record?" 
+                                       icon="ui-icon-alert"/>
+                        </c:if>
+                        <c:if test="#{sessionScope.role == 'salesperson'}">
+                            <p:confirm header="Delete Record" 
+                                       message="Store Owner or Manager only can Delte the supplier details" 
+                                       icon="ui-icon-alert"/>
+                        </c:if>
+                    </p:commandButton>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode" widgetVar="pd">
+                        <c:if test="#{sessionScope.role == 'owner' or sessionScope.role == 'manager'}">
+                            <p:commandButton title="GDelYesButton" value="Yes" styleClass="ui-confirmdialog-yes"/>
+                            <p:commandButton title="GDelNoButton" value="No" styleClass="ui-confirmdialog-no" />
+                        </c:if>
+                    </p:confirmDialog>
+                </h:form>
+            </p:column>
+                </c:if>
+
+            <p:column headerText="Edit">
+                <h:form>
+                    <!--<p:commandButton id="customeredit" value="Edit" action="# {customerbean.delete(customer.id)}" update="customerdetails"/>-->
+                    <p:commandButton id="supplierredit" value="Edit"  action="#{supplierbaen.editSupplier(supplier.id)}"  onclick="PF('dlg6').show();" update=":supplierupdate"/>
+                </h:form>
+            </p:column>
+        </p:dataTable>
+
+        <p:dialog id="editsupplierdialog" header="Edit Customer Details" widgetVar="dlg6" minHeight="80" minWidth="80" >
+            <h:form id="supplierupdate">  
+                <c:if test="#{sessionScope.role == 'owner' or sessionScope.role == 'manager'}">
+                    <h:inputHidden id="supplieridupdate" value="#{supplierbaen.deepCopy.id}"  /><br/>  
+                    <h:outputLabel for="supplierupdatename">Supplier Name</h:outputLabel>   
+                    <h:inputText id="supplierupdatename" value="#{supplierbaen.deepCopy.name}" required="true" requiredMessage="Supplier name is required" /><br/>  
+                    <h:outputLabel for="suppliertin">Supplier Tin</h:outputLabel>   
+                    <h:inputText id="suppliertin" value="#{supplierbaen.deepCopy.gsTin}" required="true" requiredMessage="Supplier Tin is required" /><br/>  
+                    <h:outputLabel for="supplierupdateaddress">Address</h:outputLabel> 
+                    <h:inputText id="supplierupdateaddress" value="#{supplierbaen.deepCopy.address}" required="true" requiredMessage="Address is required" /><br/>  
+                    <h:outputLabel for="supplierupdateemail">Email</h:outputLabel> 
+                    <h:inputText id="supplierupdateemail" value="#{supplierbaen.deepCopy.email}" required="true" requiredMessage="Email is required" /><br/>  
+                    <h:outputLabel for="supplierupdatemobile">Mobile</h:outputLabel> 
+                    <h:inputText id="supplierupdatemobile" value="#{supplierbaen.deepCopy.mobile}" required="true" requiredMessage="Mobilenumber is required" /><br/>  
+
+                    <h:commandButton id="customersubmit" value="Submit" action="#{supplierbaen.updateSupplier(supplierbaen.deepCopy)}" />  
+                </c:if>
+            </h:form> 
+            <c:if test="#{sessionScope.role == 'salesperson'}">
+                Store Owner or Manager can modify the Supplier Details
+            </c:if>
+
+        </p:dialog>
+
+        <br></br>
+        <center><h2>Customer details</h2></center>
+
+        <!--<h:form id="customerfulldetail">-->
+        <p:dataTable id="customerdetails" var="customer" value="#{customerbean.customerList}">
+            <p:column headerText="Name">
+                <h:outputText value="#{customer.name}" />
+            </p:column>
+
+            <p:column headerText="Address">
+                <h:outputText value="#{customer.address}" />
+            </p:column>
+
+            <p:column headerText="Mail">
+                <h:outputText value="#{customer.email}" />
+            </p:column>
+
+            <p:column headerText="Mobile">
+                <h:outputText value="#{customer.mobile}" />
+            </p:column>
+
+
+            <p:column headerText="Delete"  >
+                <h:form id="customerdeletecommandform">
+                    <p:commandButton id="customerdelete" 
+                                     action="#{customerbean.delete(customer.id)}" 
+                                     icon="ui-icon ui-icon-trash" 
+                                     value="Delete" 
+                                     title="GDeleteButton" update="customerdetails" onclick="PF('cd').show()">
+                        <p:confirm header="Delete Record" 
+                                   message="Are you sure about deleting this record?" 
+                                   icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode"  widgetVar="cd">
+                        <c:if test="#{sessionScope.role == 'owner' or sessionScope.role == 'manager' or sessionScope.role == 'salesperson'}">
+                        <p:commandButton title="GDelYesButton" value="Yes" styleClass="ui-confirmdialog-yes"/>
+                        <p:commandButton title="GDelNoButton" value="No" styleClass="ui-confirmdialog-no" />
+                        </c:if>
+                    </p:confirmDialog>
+                </h:form>
+            </p:column>
+
+
+            <p:column headerText="Edit">
+                <h:form>
+                    <p:commandButton id="customeredit" value="Edit"  action="#{customerbean.editCustomer(customer.id)}"  onclick="PF('dlg5').show();" update=":secondone"/>
+                </h:form>
+            </p:column>
+        </p:dataTable>
+        <p:dialog id="editcustomerdialog" header="Edit Customer Details" widgetVar="dlg5" minHeight="80" minWidth="80" >
+            <h:form id="secondone">  
+                <h:inputHidden id="customerid" value="#{customerbean.deepcopy.id}"  /><br/>  
+                <h:outputLabel for="customername">Customer Name</h:outputLabel>   
+                <h:inputText id="customername" value="#{customerbean.deepcopy.name}" required="true" requiredMessage="Customer name is required" /><br/>  
+                <h:outputLabel for="customeraddress">Address</h:outputLabel> 
+                <h:inputText id="customeraddress" value="#{customerbean.deepcopy.address}" required="true" requiredMessage="Address is required" /><br/>  
+                <h:outputLabel for="customeremail">Email</h:outputLabel> 
+                <h:inputText id="customeremail" value="#{customerbean.deepcopy.email}" required="true" requiredMessage="Email is required" /><br/>  
+                <h:outputLabel for="customermobile">Mobile</h:outputLabel> 
+                <h:inputText id="customermobile" value="#{customerbean.deepcopy.mobile}" required="true" requiredMessage="Mobilenumber is required" /><br/>  
+
+                <h:commandButton id="customersubmit" value="Submit" action="#{customerbean.updateCustomer(customerbean.deepcopy)}"/>  
+            </h:form> 
+        </p:dialog>
+        <!--</h:form>-->
+    </h:body>
+</html>
+
